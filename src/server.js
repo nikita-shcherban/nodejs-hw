@@ -26,10 +26,6 @@ app.use(
   }),
 );
 
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
-
 app.get('/', (req, res) => {
   res.status(200).json({
     message: 'Hello world!',
@@ -50,6 +46,10 @@ app.get('/notes/:noteId', (req, res) => {
 
 app.get('/test-error', () => {
   throw new Error('Simulated server error');
+});
+
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
 });
 
 app.use((err, req, res, next) => {
