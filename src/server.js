@@ -30,8 +30,22 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Hello world!',
+  });
+});
+
+app.get('/notes', (req, res) => {
+  res.status(200).json({
+    message: 'Retrieved all notes',
+  });
+});
+
+app.get('/notes/:noteId', (req, res) => {
+  res.status(200).json({
+    message: 'Retrieved note with ID: id_param',
+  });
 });
 
 app.get('/test-error', () => {
@@ -48,14 +62,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.get('/notes', (req, res) => {
-  res.status(200).json({
-    message: 'Retrieved all notes',
-  });
-});
-
-app.get('/notes/:noteId', (req, res) => {
-  res.status(200).json({
-    message: 'Retrieved note with ID: id_param',
-  });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
