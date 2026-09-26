@@ -9,21 +9,27 @@ const PORT = process.env.PORT ?? 3000;
 app.use(express.json());
 app.use(cors());
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 app.use(
-  pino({
-    level: 'info',
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        colorize: true,
-        translateTime: 'HH:MM:ss',
-        ignore: 'pid,hostname',
-        messageFormat:
-          '{req.method} {req.url} {res.statusCode} - {responseTime}ms',
-        hideObject: true,
-      },
-    },
-  }),
+  pino(
+    isProduction
+      ? { level: 'info' }
+      : {
+          level: 'info',
+          transport: {
+            target: 'pino-pretty',
+            options: {
+              colorize: true,
+              translateTime: 'HH:MM:ss',
+              ignore: 'pid,hostname',
+              messageFormat:
+                '{req.method} {req.url} {res.statusCode} - {responseTime}ms',
+              hideObject: true,
+            },
+          },
+        },
+  ),
 );
 
 app.get('/', (req, res) => {
@@ -53,10 +59,8 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  const isProd = process.env.NODE_ENV === 'production';
-
   res.status(500).json({
-    message: isProd
+    message: isProduction
       ? 'Something went wrong. Please try again later.'
       : err.message,
   });
