@@ -1,4 +1,4 @@
-import Router from 'express';
+import { Router } from 'express';
 import {
   getNoteById,
   getAllNotes,
@@ -8,12 +8,6 @@ import {
 } from '../controllers/notesController.js';
 
 const router = Router();
-
-router.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Hello world!',
-  });
-});
 
 router.get('/notes', getAllNotes);
 router.get('/notes/:noteId', getNoteById);
